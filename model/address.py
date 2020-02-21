@@ -1,4 +1,4 @@
-class Group:
+class Address:
     def __init__(self, last_name, first_name, address, phone, address2, note):
         self.last_name = last_name
         self.first_name = first_name

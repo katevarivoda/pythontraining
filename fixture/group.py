@@ -24,3 +24,10 @@ class GroupHelper:
         wd.find_element_by_name("group_footer").send_keys(group.GroupFooter)
         wd.find_element_by_name("submit").click()
         self.redirect_to_groups_tab()
+
+    def delete_first_group(self):
+        wd = self.app.wd
+        self.redirect_to_groups_tab()
+        wd.find_element_by_name("selected[]").click()
+        wd.find_element_by_name("delete").click()
+        self.redirect_to_groups_tab()

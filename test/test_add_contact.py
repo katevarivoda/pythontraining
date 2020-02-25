@@ -3,8 +3,8 @@ from model.address import Address
 
 
 def test_add_contact(app):
-    app.session.login(username="admin", password="secret")
+    app.session.login("admin", "secret")
     app.contact.add_contact(
-        Address(last_name="KateN", first_name="first_name", address="Minsk", phone="12345678", address2="Belarus",
+        Address(last_name="KateN", first_name="Nikitina", address="Minsk", phone="12345678", address2="Belarus",
                 note="Very important"))
     app.session.logout()

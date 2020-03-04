@@ -20,27 +20,37 @@ class GroupHelper:
     def delete_first_group(self):
         wd = self.app.wd
         self.redirect_to_groups_tab()
-        wd.find_element_by_name("selected[]").click()
+        self.select_first_group()
         wd.find_element_by_name("delete").click()
         self.redirect_to_groups_tab()
 
     def edit_first_group(self, group):
         wd = self.app.wd
         self.redirect_to_groups_tab()
-        wd.find_element_by_name("selected[]").click()
+        self.select_first_group()
         wd.find_element_by_name("edit").click()
         self.fill_group(group)
         wd.find_element_by_name("update").click()
         wd.find_element_by_link_text("home").click()
 
+    def select_first_group(self):
+        wd = self.app.wd
+        wd.find_element_by_name("selected[]").click()
+
     def fill_group(self, group):
         wd = self.app.wd
-        wd.find_element_by_name("group_name").click()
-        wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(group.GroupName)
-        wd.find_element_by_name("group_header").click()
-        wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(group.GroupHeader)
-        wd.find_element_by_name("group_footer").click()
-        wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(group.GroupFooter)
+        self.change_field_value("group_name", group.GroupName)
+        self.change_field_value("group_header", group.GroupHeader)
+        self.change_field_value("group_footer", group.GroupFooter)
+
+    def change_field_value(self, group_name, text):
+        wd = self.app.wd
+        if text is not None:
+            wd.find_element_by_name("group_name").click()
+            wd.find_element_by_name("group_name").clear()
+            wd.find_element_by_name("group_name").send_keys(text)
+
+    def count(self):
+        wd = self.app.wd
+        self.redirect_to_groups_tab()
+        return len(wd.find_elements_by_name("selected[]"))

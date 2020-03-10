@@ -67,3 +67,8 @@ class GroupHelper:
             id = element.find_element_by_name("selected[]").get_attribute("value")
             groups.append(Group(GroupName=text, id=id))
         return groups
+
+    def add_group_if_empty(self):
+        wd = self.app.wd
+        if self.app.group.count() == 0:
+            self.app.group.create(Group(GroupName="test"))

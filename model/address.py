@@ -1,8 +1,15 @@
 class Address:
-    def __init__(self, last_name=None, first_name=None, address=None, phone=None, address2=None, note=None):
+    def __init__(self, last_name=None, first_name=None, address=None, phone=None, address2=None, note=None, id=None):
         self.last_name = last_name
         self.first_name = first_name
         self.address = address
         self.phone = phone
         self.address2 = address2
         self.note = note
+        self.id = id
+
+    def __repr__(self):
+        return "%s:%s:%s" % (self.id, self.last_name, self.first_name)
+
+    def __eq__(self, other):
+        return (self.id is None or other.id is None or self.id == other.id) and self.last_name == other.last_name and self.first_name == other.first_name

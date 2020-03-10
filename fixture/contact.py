@@ -1,5 +1,7 @@
 __author__ = 'Ekaterina'
 
+from model.address import Address
+
 
 class ContactHelper:
     def __init__(self, app):
@@ -55,3 +57,20 @@ class ContactHelper:
         wd = self.app.wd
         self.redirect_to_home_page()
         return len(wd.find_elements_by_name('selected[]'))
+
+    def get_contacts_list(self):
+        wd = self.app.wd
+        self.redirect_to_home_page()
+        contacts = []
+        all_rows = wd.find_elements_by_css_selector("#maintable tr:not(:first-child)")
+        for element in all_rows:
+            text = element.text
+            id = element.find_element_by_name("selected[]").get_attribute("value")
+            contacts.append(Address(last_name=text, id=id))
+        return contacts
+
+    def add_contact_if_empty(self):
+        if self.app.contact.count() == 0:
+            self.app.contact.redirect_to_contacts_tab()
+            self.app.contact.add_contact(Address(last_name="Ark"))
+            self.app.contact.redirect_to_home_page()

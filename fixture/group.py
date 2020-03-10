@@ -1,5 +1,7 @@
 __author__ = 'Ekaterina'
 
+from model.group import Group
+
 
 class GroupHelper:
     def __init__(self, app):
@@ -55,3 +57,13 @@ class GroupHelper:
         wd = self.app.wd
         self.redirect_to_groups_tab()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_groups_list(self):
+        wd = self.app.wd
+        self.redirect_to_groups_tab()
+        groups = []
+        for element in wd.find_elements_by_css_selector("span.group"):
+            text = element.text
+            id = element.find_element_by_name("selected[]").get_attribute("value")
+            groups.append(Group(GroupName=text, id=id))
+        return groups

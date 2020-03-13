@@ -11,5 +11,5 @@ def test_del_first_contact(app):
     new_contacts = app.contact.get_contacts_list()
     assert old_contacts_length - 1 == len(new_contacts)
     # удаляем первый элемент из старого списка
-    # old_contacts[0:1] = []
-    # assert old_contacts == new_contacts
+    old_contacts[0:1] = []
+    assert old_contacts == new_contacts

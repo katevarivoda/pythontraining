@@ -4,7 +4,7 @@ from model.address import Address
 
 
 def test_del_first_contact(app):
-    app.contact.add_contact_if_empty()
+    app.contact.contact_count()
     old_contacts = app.contact.get_contacts_list()
     old_contacts_length = len(old_contacts)
     app.contact.delete_first_contact()

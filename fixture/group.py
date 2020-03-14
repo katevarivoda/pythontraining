@@ -19,6 +19,7 @@ class GroupHelper:
         self.fill_group(group)
         wd.find_element_by_name("submit").click()
         self.redirect_to_groups_tab()
+        self.group_cache = None
 
     def delete_first_group(self):
         wd = self.app.wd
@@ -26,6 +27,7 @@ class GroupHelper:
         self.select_first_group()
         wd.find_element_by_name("delete").click()
         self.redirect_to_groups_tab()
+        self.group_cache = None
 
     def edit_first_group(self, group):
         wd = self.app.wd
@@ -35,6 +37,7 @@ class GroupHelper:
         self.fill_group(group)
         wd.find_element_by_name("update").click()
         wd.find_element_by_link_text("home").click()
+        self.group_cache = None
 
     def select_first_group(self):
         wd = self.app.wd
@@ -59,16 +62,19 @@ class GroupHelper:
         return len(wd.find_elements_by_name("selected[]"))
 
     def get_groups_list(self):
-        wd = self.app.wd
-        self.redirect_to_groups_tab()
-        groups = []
-        for element in wd.find_elements_by_css_selector("span.group"):
-            text = element.text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            groups.append(Group(GroupName=text, id=id))
-        return groups
+        if self.group_cache is None:
+            wd = self.app.wd
+            self.redirect_to_groups_tab()
+            self.group_cache = []
+            for element in wd.find_elements_by_css_selector("span.group"):
+                text = element.text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                self.group_cache.append(Group(GroupName=text, id=id))
+        return list(self.group_cache)  # создали копию кэша
 
-    def add_group_if_empty(self):
+    group_cache = None
+
+    def group_count(self):
         wd = self.app.wd
         if self.app.group.count() == 0:
             self.app.group.create(Group(GroupName="test"))

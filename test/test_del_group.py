@@ -4,7 +4,7 @@ from model.group import Group
 
 
 def test_del_first_group(app):
-    app.group.add_group_if_empty()
+    app.group.group_count()
     old_groups = app.group.get_groups_list()
     app.group.delete_first_group()
     new_groups = app.group.get_groups_list()

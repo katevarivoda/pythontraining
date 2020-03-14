@@ -41,22 +41,31 @@ class ContactHelper:
         self.contact_cache = None
 
     def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
+        self.select_contact_by_index(index)
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         # close dialog window
         wd.switch_to_alert().accept()
         wd.find_element_by_link_text("home").click()
         self.contact_cache = None
 
-
-    def edit_first_contact(self, address):
+    def select_contact_by_index(self, index):
         wd = self.app.wd
-        wd.find_element_by_name('selected[]').click()
+        wd.find_elements_by_name("selected[]")[index].click()
+
+    def edit_contact_by_index(self, index, address):
+        wd = self.app.wd
+        self.select_contact_by_index(index)
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.fill_contact(address)
         wd.find_element_by_name("update").click()
         self.contact_cache = None
+
+    def edit_first_contact(self):
+        self.edit_contact_by_index(0)
 
     def count(self):
         wd = self.app.wd

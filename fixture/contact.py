@@ -82,7 +82,6 @@ class ContactHelper:
             # text_email = td_email.text
             # td_phone = cells[6]
             # text_phone = td_phone.text
-
             id = element.find_element_by_name("selected[]").get_attribute("value")
             contacts.append(Address(last_name=text_last_name, first_name=text_first_name, id=id))
         return contacts

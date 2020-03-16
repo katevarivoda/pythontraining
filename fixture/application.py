@@ -13,7 +13,7 @@ class Application:
 
     def open_home_page(self):
         wd = self.wd
-        if not (wd.current_url.endswith("addressbook.php")):
+        if not (wd.current_url.endswith("/index.php") and len(wd.find_elements_by_name("searchstring")) > 0):
             wd.get("http://localhost/addressbook/")
 
     def destroy(self):

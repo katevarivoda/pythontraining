@@ -5,7 +5,7 @@ from random import randrange
 
 
 def test_edit_contact(app):
-    contact = Address(last_name="Nikitina", first_name="Kate", address="New York", phone="00000", address2="Moscow",
+    contact = Address(last_name="Nikitina", first_name="Kate", address="New York", homephone="00000", address2="Moscow",
                       note="Not important")
     if app.contact.count() == 0:
         app.contact.add_contact(Address(last_name="Nikitina"))

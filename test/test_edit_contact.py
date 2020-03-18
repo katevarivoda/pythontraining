@@ -5,8 +5,8 @@ from random import randrange
 
 
 def test_edit_contact(app):
-    contact = Address(last_name="Nikitina", first_name="Kate", address="New York", homephone="00000", address2="Moscow",
-                      note="Not important")
+    contact = Address(last_name="Nikitina", first_name="Kate", address="New York", homephone="123", address2="Moscow",
+                      note="Not important", mobile="2345", work="3535")
     if app.contact.count() == 0:
         app.contact.add_contact(Address(last_name="Nikitina"))
         app.contact.redirect_to_home_page()

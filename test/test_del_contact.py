@@ -1,6 +1,6 @@
 __author__ = 'Ekaterina'
 
-from model.address import Address
+from model.contact import Contact
 from random import randrange
 
 

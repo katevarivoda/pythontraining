@@ -2,11 +2,15 @@ __author__ = 'Ekaterina'
 
 from fixture.application import Application
 import pytest
-import json
+import jsonpickle
 import os.path
+import importlib
+from data.groups import testdata
+import json
 
 fixture = None
 target = None
+
 
 @pytest.fixture
 def app(request):
@@ -39,3 +43,23 @@ def pytest_addoption(parser):
     parser.addoption("--baseUrl", action="store", default="http://localhost/addressbook/")
     parser.addoption("--password", action='store', default="secret")
     parser.addoption("--target", action='store', default="target.json")
+
+
+def pytest_generate_tests(metafunc):
+    for fixture in metafunc.fixturenames:
+        if fixture.startswith("data_"):
+            testdata = load_from_module(fixture[5:])
+            metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])
+        elif fixture.startswith("json_"):
+            testdata = load_from_json(fixture[5:])
+            metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])
+
+
+def load_from_module(module):
+    return importlib.import_module("data.%s" % module).testdata
+
+
+def load_from_json(file):
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data/%s.json" % file)) as f:
+        return jsonpickle.decode(f.read())
+

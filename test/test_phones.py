@@ -18,6 +18,18 @@ def test_contact(app):
     assert contact_from_home_page.all_emails_from_home_page == merge_emails_like_on_home_page(contact_from_edit_page)
 
 
+def test_contact_db_home(app, db):
+    contacts_db = sorted(db.get_contact_list(), key=Contact.id_or_max)
+    contacts_on_home_page = sorted(app.contact.get_contacts_list(), key=Contact.id_or_max)
+    for i in range(len(contacts_on_home_page)):
+        contact_from_home_page = contacts_on_home_page[i]
+        contact_from_db = contacts_db[i]
+        assert contact_from_home_page.id == contact_from_db.id
+        assert contact_from_home_page.first_name == contact_from_db.first_name
+        assert contact_from_home_page.last_name == contact_from_db.last_name
+
+
+
 def test_phones_on_contact_view_page(app):
     contact = app.contact.get_contacts_list()
     index = randrange(len(contact))
@@ -27,8 +39,6 @@ def test_phones_on_contact_view_page(app):
     assert contact_from_view_page.work == contact_from_edit_page.work
     assert contact_from_view_page.mobile == contact_from_edit_page.mobile
     assert contact_from_view_page.phone2 == contact_from_edit_page.phone2
-
-
 
 
 def clear(s):

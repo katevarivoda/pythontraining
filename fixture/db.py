@@ -4,7 +4,7 @@ from pony.orm.dbproviders import mysql
 
 from model.contact import Contact
 from model.group import Group
-
+import pymysql
 
 class DBFixture:
     def __init__(self, host, name, user, password):
@@ -12,7 +12,7 @@ class DBFixture:
         self.name = name
         self.user = user
         self.password = password
-        self.connection = mysql.connect(host=host, database=name, user=user, password=password, autocommit=True)
+        self.connection = pymysql.connect(host=host, database=name, user=user, password=password, autocommit=True)
 
     def get_group_list(self):
         list = []

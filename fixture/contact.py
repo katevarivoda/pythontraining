@@ -1,7 +1,11 @@
 __author__ = 'Ekaterina'
 
+from selenium.webdriver.support import select
+
 from model.contact import Contact
 import re
+from selenium.webdriver.support.ui import Select
+
 
 
 class ContactHelper:
@@ -70,6 +74,15 @@ class ContactHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         # close dialog window
         wd.switch_to_alert().accept()
+        wd.find_element_by_link_text("home").click()
+        self.contact_cache = None
+
+    def delete_contact(self, contact_id, group_id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
+        # wd.find_element_by_xpath("//select[@name='to_group']").click()
+        # wd.find_element_by_name("to_group").click()
+        wd.find_element_by_xpath("//input[@name='add']").click()
         wd.find_element_by_link_text("home").click()
         self.contact_cache = None
 
@@ -173,3 +186,51 @@ class ContactHelper:
             self.app.contact.redirect_to_contacts_tab()
             self.app.contact.add_contact(Contact(last_name="Ark"))
             self.app.contact.redirect_to_home_page()
+
+    def add_contact_to_group(self, contact_id, group_id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.select_contact_by_id(contact_id)
+        wd.find_element_by_name("to_group").click()
+        select = Select(wd.find_element_by_name("to_group"))
+        select.select_by_value(group_id)
+        wd.find_element_by_xpath('//input[@value="Add to"]').click()
+        wd.find_element_by_xpath('//i//*[contains(text(),"group page")]').click()
+
+    def delete_contact_from_group(self, contact_id, group_id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.select_contact_by_id(contact_id)
+        wd.find_element_by_name("group").click()
+        select = Select(wd.find_element_by_name("group"))
+        select.select_by_value(group_id)
+        # Select(wd.find_element_by_name("group")).select_by_visible_text("name")
+        wd.find_element_by_name("group").click()
+        wd.find_element_by_id("MassCB").click()
+        wd.find_element_by_name("remove").click()
+        wd.find_element_by_link_text("home").click()
+
+
+
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_id(id).click()
+
+    def sort_by_group_by_id(self, group_id):
+        wd = self.app.wd
+        select = Select(wd.find_element_by_xpath('//select[@name="group"]'))
+        select.select_by_value(group_id)
+
+    def get_contact_info_by_id(self, contact_id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        row = wd.find_element_by_xpath('//td/*[@id="' + contact_id + '"]/../..')
+        cells = row.find_elements_by_tag_name("td")
+        id = cells[0].find_element_by_tag_name("input").get_attribute("value")
+        firstname = cells[2].text
+        lastname = cells[1].text
+        address = cells[3].text
+        all_emails = cells[4].text
+        all_phones = cells[5].text
+        return Contact(id=id, first_name=firstname, last_name=lastname, address=address,
+                       all_emails_from_home_page=all_emails, all_phones_from_home_page=all_phones)

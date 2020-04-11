@@ -1,7 +1,5 @@
 __author__ = 'Ekaterina'
 
-from pony.orm.dbproviders import mysql
-
 from model.contact import Contact
 from model.group import Group
 import pymysql

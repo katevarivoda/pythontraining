@@ -68,12 +68,6 @@ def stop(request):
     request.addfinalizer(fin)
     return fixture
 
-
-
-    # parser.addoption("--browser", action="store", default="firefox")
-    # parser.addoption("--baseUrl", action="store", default="http://localhost/addressbook/")
-    # parser.addoption("--password", action='store', default="secret")
-    # parser.addoption("--target", action='store', default="target.json")
 def pytest_addoption(parser):
         parser.addoption("--browser", action='store', default="firefox")
         parser.addoption("--target", action='store', default="target.json")

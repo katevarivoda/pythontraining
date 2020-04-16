@@ -36,5 +36,38 @@ class DBFixture:
             cursor.close()
         return list
 
+    def get_contact_tel_list(self):
+        list_tel = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(
+                "select id, firstname, lastname, home, mobile, work, phone2 from addressbook where deprecated='0000-00-00 00:00'")
+            for row in cursor:
+                (id, firstname, lastname, home, mobile, work, phone2) = row
+                list_tel.append(
+                    Contact(id = str(id), first_name = firstname, last_name = lastname, homephone=home,
+                            mobile = mobile,
+                            work = work, phone2 = phone2))
+        finally:
+            cursor.close()
+        return list_tel
+
+    def get_contact_mail_list(self):
+        list = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(
+                "select id, firstname, lastname, email, email2, email3 from addressbook where deprecated='0000-00-00 00:00'")
+            for row in cursor:
+                (id, firstname, lastname, email, email2, email3) = row
+                list.append(Contact(id = str(id), first_name = firstname, last_name = lastname, homephone=home,
+                            mobile = mobile,
+                            work = work, phone2 = phone2))
+        finally:
+            cursor.close()
+        return list
+
+
+
     def destroy(self):
         self.connection.close()
